@@ -3,15 +3,14 @@ on:
   issues:
     types: [labeled]
 
-permissions:
-  contents: write      # Required for the agent to create/push branches
-  issues: write        # Required to assign the agent and comment
-  pull-requests: write # Required for the agent to open the PR
-  
 jobs:
   initiate_migration:
     if: github.event.label.name == 'declaration-keys-migration-request'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
 
     steps:
       - name: Checkout Repository
@@ -19,10 +18,11 @@ jobs:
 
       - name: 🚀 Assign to Copilot Agent
         env:
-          # Use your PAT stored in Secrets
+          # Use your licensed Personal Access Token (PAT)
           GH_TOKEN: ${{ secrets.COPILOT_ASSIGNER_TOKEN }}
         run: |
-          # Use REST API to bypass GraphQL 'Resource not accessible' errors
+          # Use REST API to bypass the 'replaceActorsForAssignable' GraphQL error
+          # This officially assigns the 'copilot-swe-agent' bot
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
@@ -30,5 +30,4 @@ jobs:
             /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/assignees \
             -f "assignees[]=copilot-swe-agent"
 
-          # Add a comment so you know it actually triggered
-          gh issue comment ${{ github.event.issue.number }} --body "🚀 **Migration Hand-off Successful.** The Copilot Agent is now analyzing your tables based on .github/copilot-instructions.md."
+          gh issue comment ${{ github.event.issue.number }} --body "🚀 **Migration Started.** The Copilot Coding Agent is now interpreting your tables based on .github/copilot-instructions.md."
