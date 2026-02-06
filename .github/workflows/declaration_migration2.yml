@@ -16,12 +16,22 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: 🚀 Assign to Copilot Agent
+      - name: 🚀 Force Trigger Copilot Agent
         env:
           GH_TOKEN: ${{ secrets.COPILOT_ASSIGNER_TOKEN }}
         run: |
-          gh api \
-            --method POST \
-            -H "Accept: application/vnd.github+json" \
-            /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/assignees \
-            -F "assignees[]=copilot-swe-agent"
+          # 1. Get the GraphQL ID for the Issue
+          ISSUE_NODE_ID=$(gh api graphql -f query='query($owner:String!, $repo:String!, $num:Int!) {
+            repository(owner:$owner, name:$repo) {
+              issue(number:$num) { id }
+            }
+          }' -F owner=${{ github.repository_owner }} -F repo=${{ github.event.repository.name }} -F num=${{ github.event.issue.number }} --jq '.data.repository.issue.id')
+
+          # 2. Use the dedicated Agent Assignment mutation
+          gh api graphql -f query='mutation($id:ID!) {
+            assignCopilotAgentToAssignable(input: {assignableId: $id}) {
+              assignable { ... on Issue { number } }
+            }
+          }' -F id=$ISSUE_NODE_ID
+
+          gh issue comment ${{ github.event.issue.number }} --body "🤖 **Copilot Agent Invoked.** Please check the 'Agents' tab at the top of the repo to see the progress."
