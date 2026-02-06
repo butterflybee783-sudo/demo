@@ -1,4 +1,4 @@
-name: 🤖 Trigger Copilot Migration Agent2
+name: 🤖 Trigger Copilot Migration Agent
 on:
   issues:
     types: [labeled]
@@ -8,21 +8,19 @@ jobs:
     if: github.event.label.name == 'declaration-keys-migration-request'
     runs-on: ubuntu-latest
     permissions:
-      contents: write
       issues: write
-      pull-requests: write
+      contents: write
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: 🚀 Assign to Copilot Agent
+      - name: 🚀 Assign Copilot Agent
         env:
-          # Use your licensed Personal Access Token (PAT)
+          # IMPORTANT: Use a Fine-Grained PAT with 'Administration: Write'
           GH_TOKEN: ${{ secrets.COPILOT_ASSIGNER_TOKEN }}
         run: |
-          # Use REST API to bypass the 'replaceActorsForAssignable' GraphQL error
-          # This officially assigns the 'copilot-swe-agent' bot
+          # Use the REST API to force the assignment of the agent
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
@@ -30,4 +28,4 @@ jobs:
             /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/assignees \
             -f "assignees[]=copilot-swe-agent"
 
-          gh issue comment ${{ github.event.issue.number }} --body "🚀 **Migration Started.** The Copilot Coding Agent is now interpreting your tables based on .github/copilot-instructions.md."
+          gh issue comment ${{ github.event.issue.number }} --body "🚀 **Agent Triggered.** Copilot is now reading your tables. Check the 'Agents' tab or the PR list in 1-2 minutes."
