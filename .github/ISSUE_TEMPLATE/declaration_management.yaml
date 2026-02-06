@@ -1,5 +1,5 @@
 name: 🚀 Declaration Management Request
-description: The easiest way to Add, Update, or Delete keys without using tables or pipes.
+description: Add, Update, or Delete entries without using tables or pipes.
 title: "Declaration: [Country Name]"
 labels: ["migration-request"]
 body:
@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         ### 📖 Quick Guide
-        Fill out the fields below. No special formatting or "pipes" (|) are required!
+        Fill out only the section relevant to your request. No special formatting is required!
 
   - type: dropdown
     id: action
@@ -29,25 +29,31 @@ body:
       required: true
 
   - type: textarea
-    id: entry_list
+    id: add_section
     attributes:
-      label: "Entry Details"
-      description: "List the MessageType and MessageName here. If adding multiple, put each on a new line."
-      placeholder: |
-        MessageType: CC415A, Name: Standard declaration
-        MessageType: CC415B, Name: Simplified declaration
-    validations:
-      required: true
+      label: "🟢 1. ADD: New Entry Details"
+      description: "List the new entries. One per line."
+      placeholder: "MessageType: CC415A, Name: Standard declaration, Group: Standard"
 
   - type: textarea
-    id: additional_metadata
+    id: update_section
     attributes:
-      label: "Additional Details (Optional)"
-      description: "Any extra info like ProcedureGroup or ValidFrom dates."
-      placeholder: "ProcedureGroup: Standard, ValidFrom: 0001-01-01"
+      label: "🟡 2. UPDATE: Existing Entries"
+      description: "Specify which MessageType to change and what the new values should be."
+      placeholder: |
+        FIND MessageType: CC415A
+        CHANGE Name TO: Revised Standard Declaration
+        CHANGE Group TO: Simplified
+
+  - type: textarea
+    id: delete_section
+    attributes:
+      label: "🔴 3. DELETE: Remove Entries"
+      description: "List the MessageTypes that should be removed."
+      placeholder: "Delete MessageType: CC999B"
 
   - type: textarea
     id: justification
     attributes:
       label: "Business Justification"
-      placeholder: "Why are these changes needed? (e.g., New country onboarding)"
+      placeholder: "Why are these changes needed? (e.g., Faster country onboarding)"
