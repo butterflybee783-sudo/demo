@@ -1,5 +1,5 @@
 name: 🚀 Declaration Management Request
-description: Add, Update, or Delete entries in the Declaration Table using a simple form.
+description: Add, Update, or Delete entries in the Declaration Table.
 title: "Declaration: [Country Name]"
 labels: ["migration-request"]
 body:
@@ -14,25 +14,21 @@ body:
     validations:
       required: true
 
-  - type: input
-    id: country
+  - type: textarea
+    id: add_table
     attributes:
-      label: Country Code
-      placeholder: "e.g., ES, UK, FR"
+      label: 🟢 Data for NEW Entries
+      description: If you selected "Add New Key", fill out this table. (Do not delete the pipes!)
+      value: |
+        | Country | Procedure | MessageType | MessageName | ProcedureGroup | ValidFrom |
+        | :--- | :--- | :--- | :--- | :--- | :--- |
+        | | | | | | |
     validations:
-      required: true
-
-  - type: input
-    id: message_type
-    attributes:
-      label: Message Type
-      placeholder: "e.g., CC415A"
-    validations:
-      required: true
+      required: false
 
   - type: textarea
-    id: new_values
+    id: update_delete
     attributes:
-      label: New Values (For Add or Update)
-      description: Enter the new Name, Group, or Dates if applicable.
-      placeholder: "MessageName: Standard declaration\nProcedureGroup: Standard"
+      label: 🟡 Details for Update or Delete
+      description: Provide identifiers (Country, MessageType) or specific changes needed.
+      placeholder: "e.g. For CC415A, change MessageName to 'Simplified'"
