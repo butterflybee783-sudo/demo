@@ -1,29 +1,64 @@
-name: 🚀 Declaration Management Request
-description: Add, Update, or Delete entries by simply filling in the rows.
-title: "Declaration: [Country Name]"
-labels: ["migration-request"]
-body:
-  - type: markdown
-    attributes:
-      value: |
-        ### 💡 Instructions
-        Fill in the rows below. If you need more rows, just copy and paste an existing line.
-  
-  - type: textarea
-    id: migration_table
-    attributes:
-      label: "Migration Data Table"
-      description: "Just add your data between the pipes (|)."
-      value: |
-        | Action (Add/Update/Delete) | Country | Procedure | MessageType | MessageName | ProcedureGroup |
-        | :--- | :--- | :--- | :--- | :--- | :--- |
-        | Add | | | | | |
-        | Update | | | | | |
-    validations:
-      required: true
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EF Core Config Documentation</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; background-color: #f4f7f6; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #3498db; color: white; }
+        input { width: 90%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn { background-color: #27ae60; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn:hover { background-color: #219150; }
+        .controls { margin-top: 20px; text-align: right; }
+    </style>
+</head>
+<body>
 
-  - type: textarea
-    id: context
-    attributes:
-      label: "Additional Notes"
-      placeholder: "e.g. This is for the new 2026 Spain onboarding."
+<div class="container">
+    <h2>DB Configuration Documentation</h2>
+    <p>Use the table below to document environment-specific connection strings.</p>
+    
+    <table id="configTable">
+        <thead>
+            <tr>
+                <th>Environment</th>
+                <th>Key Name</th>
+                <th>Connection String / Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" placeholder="e.g. Development"></td>
+                <td><input type="text" placeholder="DefaultConnection"></td>
+                <td><input type="text" placeholder="Server=localhost;..."></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="controls">
+        <button class="btn" onclick="addRow()">+ Add New Row</button>
+    </div>
+</div>
+
+<script>
+    function addRow() {
+        const table = document.getElementById("configTable").getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow();
+        
+        for (let i = 0; i < 3; i++) {
+            const cell = newRow.insertCell(i);
+            const input = document.createElement("input");
+            input.type = "text";
+            input.placeholder = i === 0 ? "Environment" : i === 1 ? "Key Name" : "Connection String";
+            cell.appendChild(input);
+        }
+    }
+</script>
+
+</body>
+</html>
