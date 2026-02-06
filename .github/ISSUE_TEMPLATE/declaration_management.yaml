@@ -1,6 +1,6 @@
 name: 🚀 Declaration Management Request
 description: Add, Update, or Delete entries without using tables or pipes.
-title: "Declaration: [Country Name]"
+title: "Declaration: [Country Code]"
 labels: ["migration-request"]
 body:
   - type: markdown
@@ -8,7 +8,6 @@ body:
       value: |
         ### 📖 Quick Guide
         Fill out only the section relevant to your request. No special formatting is required!
-
   - type: dropdown
     id: action
     attributes:
@@ -19,7 +18,6 @@ body:
         - Delete Entries
     validations:
       required: true
-
   - type: input
     id: country_code
     attributes:
@@ -27,14 +25,12 @@ body:
       placeholder: "e.g., ES"
     validations:
       required: true
-
   - type: textarea
     id: add_section
     attributes:
       label: "🟢 1. ADD: New Entry Details"
       description: "List the new entries. One per line."
       placeholder: "MessageType: CC415A, Name: Standard declaration, Group: Standard"
-
   - type: textarea
     id: update_section
     attributes:
@@ -44,14 +40,12 @@ body:
         FIND MessageType: CC415A
         CHANGE Name TO: Revised Standard Declaration
         CHANGE Group TO: Simplified
-
   - type: textarea
     id: delete_section
     attributes:
       label: "🔴 3. DELETE: Remove Entries"
       description: "List the MessageTypes that should be removed."
       placeholder: "Delete MessageType: CC999B"
-
   - type: textarea
     id: justification
     attributes:
