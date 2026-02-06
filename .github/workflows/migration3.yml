@@ -17,7 +17,7 @@ jobs:
 
       - name: 🚀 Assign to Copilot Agent
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.COPILOT_ASSIGNER_TOKEN }}
         run: |
           # Use the official internal login for the coding agent
           gh issue edit ${{ github.event.issue.number }} --add-assignee "copilot-swe-agent"
