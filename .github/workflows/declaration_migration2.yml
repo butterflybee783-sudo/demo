@@ -18,15 +18,10 @@ jobs:
 
       - name: 🚀 Assign to Copilot Agent
         env:
-          # This MUST be a PAT with 'Administration: Write' permissions
           GH_TOKEN: ${{ secrets.COPILOT_ASSIGNER_TOKEN }}
         run: |
-          # POST to the assignees endpoint using the correct array syntax
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/assignees \
-            -f "assignees[]=copilot-swe-agent"
-
-          gh issue comment ${{ github.event.issue.number }} --body "🚀 **Migration Started.** The Copilot Coding Agent is now interpreting your tables. You will receive a Pull Request shortly."
+            -F "assignees[]=copilot-swe-agent"
