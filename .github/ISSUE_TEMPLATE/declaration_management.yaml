@@ -1,34 +1,29 @@
 name: 🚀 Declaration Management Request
-description: Add, Update, or Delete entries in the Declaration Table.
+description: Add, Update, or Delete entries by simply filling in the rows.
 title: "Declaration: [Country Name]"
 labels: ["migration-request"]
 body:
-  - type: dropdown
-    id: action
+  - type: markdown
     attributes:
-      label: What action do you want to take?
-      options:
-        - Add New Key
-        - Update Existing Key
-        - Delete Key
+      value: |
+        ### 💡 Instructions
+        Fill in the rows below. If you need more rows, just copy and paste an existing line.
+  
+  - type: textarea
+    id: migration_table
+    attributes:
+      label: "Migration Data Table"
+      description: "Just add your data between the pipes (|)."
+      value: |
+        | Action (Add/Update/Delete) | Country | Procedure | MessageType | MessageName | ProcedureGroup |
+        | :--- | :--- | :--- | :--- | :--- | :--- |
+        | Add | | | | | |
+        | Update | | | | | |
     validations:
       required: true
 
   - type: textarea
-    id: add_table
+    id: context
     attributes:
-      label: 🟢 Data for NEW Entries
-      description: If you selected "Add New Key", fill out this table. (Do not delete the pipes!)
-      value: |
-        | Country | Procedure | MessageType | MessageName | ProcedureGroup | ValidFrom |
-        | :--- | :--- | :--- | :--- | :--- | :--- |
-        | | | | | | |
-    validations:
-      required: false
-
-  - type: textarea
-    id: update_delete
-    attributes:
-      label: 🟡 Details for Update or Delete
-      description: Provide identifiers (Country, MessageType) or specific changes needed.
-      placeholder: "e.g. For CC415A, change MessageName to 'Simplified'"
+      label: "Additional Notes"
+      placeholder: "e.g. This is for the new 2026 Spain onboarding."
