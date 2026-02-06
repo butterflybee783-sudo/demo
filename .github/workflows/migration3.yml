@@ -5,15 +5,13 @@ on:
 
 jobs:
   initiate_migration:
+    # Only run for your specific migration label
     if: github.event.label.name == 'declaration-keys-migration-request'
     runs-on: ubuntu-latest
     permissions:
-      issues: write
       contents: read
+      issues: write
       pull-requests: write
-      # --- ADD THIS PERMISSION ---
-      members: write 
-      # ---------------------------
 
     steps:
       - name: Checkout Repository
@@ -23,8 +21,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Use the UI handle '@copilot'. If that fails, the 'members: write' 
-          # permission ensures the runner can resolve the bot account.
-          gh issue edit ${{ github.event.issue.number }} --add-assignee "@copilot"
+          # Use the official handle to trigger the agent
+          gh issue edit ${{ github.event.issue.number }} --add-assignee "copilot"
           
           gh issue comment ${{ github.event.issue.number }} --body "🚀 **Migration Started.** The Copilot Coding Agent is now interpreting your tables."
