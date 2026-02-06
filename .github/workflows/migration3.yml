@@ -3,6 +3,11 @@ on:
   issues:
     types: [labeled]
 
+permissions:
+  contents: write      # Required for the agent to create/push branches
+  issues: write        # Required to assign the agent and comment
+  pull-requests: write # Required for the agent to open the PR
+  
 jobs:
   initiate_migration:
     if: github.event.label.name == 'declaration-keys-migration-request'
