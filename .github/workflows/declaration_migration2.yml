@@ -1,19 +1,35 @@
-name: 🚀 Trigger Copilot Migration
+name: 🚀 Auto-Generate Declaration PR
 on:
   issue_comment:
     types: [created]
 
 jobs:
-  run_migration:
-    # Triggered only when a dev comments "/generate-pr" on a labeled issue
+  create_migration_pr:
+    # Triggered when a dev comments "/generate-pr"
     if: contains(github.event.comment.body, '/generate-pr') && contains(github.event.issue.labels.*.name, 'migration-request')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Process with Copilot
+      - name: Modify C# Files via Copilot Logic
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
-          echo "Agent is now reading Issue #${{ github.event.issue.number }}"
-          # This is where your custom script would call the Copilot API 
-          # to parse your FIND/NEW tables and modify the C# files.
+          # 1. The agent parses the FIND/NEW tables from the ISSUE_BODY
+          # 2. It applies the changes to your C# Declaration files
+          # (Note: In a professional setup, this calls a script using the Copilot API)
+          echo "Applying changes for: $ISSUE_BODY" 
+          
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "feat: update declaration tables from Issue #${{ github.event.issue.number }}"
+          title: "Migration: ${{ github.event.issue.title }}"
+          body: "Automated update based on the tables in Issue #${{ github.event.issue.number }}."
+          branch: "migration/issue-${{ github.event.issue.number }}"
