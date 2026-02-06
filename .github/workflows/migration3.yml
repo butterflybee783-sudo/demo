@@ -1,4 +1,4 @@
-name: 🤖 Trigger Copilot Migration Agent
+name: 🤖 Trigger Copilot Migration Agent2
 on:
   issues:
     types: [labeled]
@@ -17,22 +17,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Copilot CLI
-        run: gh extension install github/gh-copilot
-
-      - name: 🚀 Run Copilot Agent Logic
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: gh extension install github/gh-copilot
+
+      - name: 🚀 Assign to Copilot Agent
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Instead of assigning, we pass the issue data directly to Copilot
-          # This command tells Copilot to apply the tables from the issue to your code
-          gh copilot suggest "Apply the Add/Update/Delete changes from Issue #${{ github.event.issue.number }} to DeclarationTable.cs" --target shell
+          # Assigning to @copilot is the standard UI trigger for the Coding Agent
+          gh issue edit ${{ github.event.issue.number }} --add-assignee "@copilot"
           
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "feat: automated declaration update by Copilot Agent"
-          title: "Migration: ${{ github.event.issue.title }}"
-          body: "Automated update based on Issue #${{ github.event.issue.number }}. Agent used instructions from .github/copilot-instructions.md."
-          branch: "copilot-migration/issue-${{ github.event.issue.number }}"
+          gh issue comment ${{ github.event.issue.number }} --body "🚀 **Migration Started.** The Copilot Coding Agent is now interpreting your tables and generating the C# code."
