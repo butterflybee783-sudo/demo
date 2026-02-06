@@ -7,28 +7,51 @@ body:
     attributes:
       value: |
         ### 📖 BA Instructions
-        Follow the schema below to manage declaration keys. 
-        - **To Update**: Fill in the **FIND** section to locate the record and the **NEW** section for changes.
-        - **To Add/Delete**: Use the dedicated tables below.
+        Check the box for the action you want to perform, then fill in the corresponding table below.
+
+  - type: checkboxes
+    id: actions_to_perform
+    attributes:
+      label: "Select Operations"
+      description: "Select which actions are included in this request."
+      options:
+        - label: "🟢 I am ADDING new entries"
+        - label: "🟡 I am UPDATING existing entries"
+        - label: "🔴 I am DELETING entries"
 
   - type: textarea
     id: add_table
     attributes:
       label: "🟢 ADD: New Entries"
+      description: "Fill this if the 'Add' checkbox is selected."
       value: |
         | Country | Procedure | MessageType | MessageTypeCategory | MessageName | ProcedureGroup | ValidFrom |
         | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
         | | | | | | | |
 
-  - type: textarea
-    id: update_table
+  - type: markdown
     attributes:
-      label: "🟡 UPDATE: Existing Entries"
-      description: "Use the first 4 columns to FIND the record, then specify the changes."
+      value: "### 🟡 UPDATE: Existing Entries"
+
+  - type: textarea
+    id: update_find_table
+    attributes:
+      label: "1. Find Record (Existing Values)"
+      description: "Enter the current values to identify the record."
       value: |
-        | [FIND] Country | [FIND] Procedure | [FIND] MessageName | [FIND] Category | [NEW] MessageType | [NEW] Group | [NEW] ValidUntil |
-        | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-        | | | | | | | |
+        | [FIND] Country | [FIND] Procedure | [FIND] MessageName | [FIND] MessageTypeCategory |
+        | :--- | :--- | :--- | :--- |
+        | | | | |
+
+  - type: textarea
+    id: update_new_table
+    attributes:
+      label: "2. Change To (New Values)"
+      description: "Enter the new values for the record found above."
+      value: |
+        | [NEW] MessageType | [NEW] MessageTypeCategory | [NEW] MessageName | [NEW] ProcedureGroup |
+        | :--- | :--- | :--- | :--- |
+        | | | | |
 
   - type: textarea
     id: delete_table
@@ -36,7 +59,7 @@ body:
       label: "🔴 DELETE: Remove Entries"
       description: "Provide identifiers to remove a record."
       value: |
-        | [FIND] Country | [FIND] Procedure | [FIND] MessageName | [FIND] Category |
+        | Country | Procedure | MessageName | MessageTypeCategory |
         | :--- | :--- | :--- | :--- |
         | | | | |
 
