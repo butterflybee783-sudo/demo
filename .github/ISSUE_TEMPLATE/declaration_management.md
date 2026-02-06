@@ -1,42 +1,38 @@
----
 name: 🚀 Declaration Management Request
-about: Add, Update, or Delete entries in the Declaration Table.
-title: 'Declaration: [Country/Region]'
-labels: ['migration-request']
----
+description: Add, Update, or Delete entries in the Declaration Table using a simple form.
+title: "Declaration: [Country Name]"
+labels: ["migration-request"]
+body:
+  - type: dropdown
+    id: action
+    attributes:
+      label: What action do you want to take?
+      options:
+        - Add New Key
+        - Update Existing Key
+        - Delete Key
+    validations:
+      required: true
 
-### 🟢 ADD New Entries
-*Use this table to insert completely new declaration keys.*
+  - type: input
+    id: country
+    attributes:
+      label: Country Code
+      placeholder: "e.g., ES, UK, FR"
+    validations:
+      required: true
 
-| Country | Procedure | MessageType | MessageTypeCategory | MessageName | ProcedureGroup | ValidFrom |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| | | | | | | |
+  - type: input
+    id: message_type
+    attributes:
+      label: Message Type
+      placeholder: "e.g., CC415A"
+    validations:
+      required: true
 
----
-
-### 🟡 UPDATE Existing Entries
-*To update, provide the **Current** values (to find the row) and the **New** values (to apply).*
-
-**Current Values (Find):**
-| Country | Procedure | MessageType |
-| :--- | :--- | :--- |
-| | | |
-
-**New Values (Change To):**
-| MessageName | ProcedureGroup | ValidFrom | ValidUntil |
-| :--- | :--- | :--- | :--- |
-| | | | |
-
----
-
-### 🔴 DELETE Entries
-*The agent will permanently remove any row matching these identifiers.*
-
-| Country | Procedure | MessageType |
-| :--- | :--- | :--- |
-| | | |
-
----
-
-### 💡 Justification
-Provide a brief reason for these changes.
+  - type: textarea
+    id: new_values
+    attributes:
+      label: New Values (For Add or Update)
+      description: Enter the new Name, Group, or Dates if applicable.
+      placeholder: "MessageName: Standard declaration\nProcedureGroup: Standard"
