@@ -1,4 +1,4 @@
-name: 🤖 Trigger Copilot Migration Agent2
+name: 🤖 Trigger Copilot Migration Agent22
 on:
   issues:
     types: [labeled]
@@ -9,26 +9,22 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write
-      contents: write
+      contents: read
       pull-requests: write
+      # --- ADD THIS PERMISSION ---
+      members: write 
+      # ---------------------------
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Copilot CLI
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Upgrade if exists, otherwise install
-          gh extension upgrade gh-copilot || gh extension install github/gh-copilot || true
-
       - name: 🚀 Assign to Copilot Agent
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Use the UI handle '@copilot' to trigger the coding agent
-          # This initiates the session where it reads .github/copilot-instructions.md
+          # Use the UI handle '@copilot'. If that fails, the 'members: write' 
+          # permission ensures the runner can resolve the bot account.
           gh issue edit ${{ github.event.issue.number }} --add-assignee "@copilot"
           
-          gh issue comment ${{ github.event.issue.number }} --body "🚀 **Migration Started.** The Copilot Coding Agent is now interpreting your tables and generating the C# code."
+          gh issue comment ${{ github.event.issue.number }} --body "🚀 **Migration Started.** The Copilot Coding Agent is now interpreting your tables."
