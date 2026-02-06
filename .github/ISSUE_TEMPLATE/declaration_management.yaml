@@ -1,64 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EF Core Config Documentation</title>
-    <style>
-        body { font-family: sans-serif; margin: 40px; background-color: #f4f7f6; }
-        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background-color: #3498db; color: white; }
-        input { width: 90%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-        .btn { background-color: #27ae60; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn:hover { background-color: #219150; }
-        .controls { margin-top: 20px; text-align: right; }
-    </style>
+    <title>Config Documentation</title>
 </head>
 <body>
 
-<div class="container">
-    <h2>DB Configuration Documentation</h2>
-    <p>Use the table below to document environment-specific connection strings.</p>
-    
-    <table id="configTable">
+    <h2>Configuration Entry Table</h2>
+    <p>Fill in the details for your DbContext settings below:</p>
+
+    <table border="1" id="docTable" style="width:100%; border-collapse: collapse;">
         <thead>
             <tr>
-                <th>Environment</th>
-                <th>Key Name</th>
-                <th>Connection String / Value</th>
+                <th>Setting Name</th>
+                <th>Key/Path</th>
+                <th>Value (Connection String)</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td><input type="text" placeholder="e.g. Development"></td>
-                <td><input type="text" placeholder="DefaultConnection"></td>
-                <td><input type="text" placeholder="Server=localhost;..."></td>
+                <td><input type="text" style="width:95%"></td>
+                <td><input type="text" style="width:95%"></td>
+                <td><input type="text" style="width:95%"></td>
+                <td><button onclick="deleteRow(this)">Remove</button></td>
             </tr>
         </tbody>
     </table>
 
-    <div class="controls">
-        <button class="btn" onclick="addRow()">+ Add New Row</button>
-    </div>
-</div>
+    <br>
+    <button onclick="addRow()">+ Add New Row</button>
 
-<script>
-    function addRow() {
-        const table = document.getElementById("configTable").getElementsByTagName('tbody')[0];
-        const newRow = table.insertRow();
-        
-        for (let i = 0; i < 3; i++) {
-            const cell = newRow.insertCell(i);
-            const input = document.createElement("input");
-            input.type = "text";
-            input.placeholder = i === 0 ? "Environment" : i === 1 ? "Key Name" : "Connection String";
-            cell.appendChild(input);
+    <script>
+        function addRow() {
+            var table = document.getElementById("docTable").getElementsByTagName('tbody')[0];
+            var row = table.insertRow(-1);
+            
+            // Create 3 input cells
+            for (var i = 0; i < 3; i++) {
+                var cell = row.insertCell(i);
+                var input = document.createElement("input");
+                input.type = "text";
+                input.style.width = "95%";
+                cell.appendChild(input);
+            }
+            
+            // Add the delete button cell
+            var actionCell = row.insertCell(3);
+            actionCell.innerHTML = '<button onclick="deleteRow(this)">Remove</button>';
         }
-    }
-</script>
+
+        function deleteRow(btn) {
+            var row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+    </script>
 
 </body>
 </html>
