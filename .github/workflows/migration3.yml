@@ -16,16 +16,19 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Copilot CLI
+      - name: Setup Copilot CLI
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh extension install github/gh-copilot
+        run: |
+          # Upgrade if exists, otherwise install
+          gh extension upgrade gh-copilot || gh extension install github/gh-copilot || true
 
       - name: 🚀 Assign to Copilot Agent
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Assigning to @copilot is the standard UI trigger for the Coding Agent
+          # Use the UI handle '@copilot' to trigger the coding agent
+          # This initiates the session where it reads .github/copilot-instructions.md
           gh issue edit ${{ github.event.issue.number }} --add-assignee "@copilot"
           
           gh issue comment ${{ github.event.issue.number }} --body "🚀 **Migration Started.** The Copilot Coding Agent is now interpreting your tables and generating the C# code."
