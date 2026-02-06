@@ -5,17 +5,22 @@ on:
 
 jobs:
   initiate_migration:
-    if: github.event.label.name == 'migration-request'
+    if: github.event.label.name == 'declaration-keys-migration-request'
     runs-on: ubuntu-latest
     permissions:
       issues: write
 
     steps:
+      # --- ADD THIS STEP BELOW ---
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      # ---------------------------
+
       - name: 🚀 Assign to Copilot Agent
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Assigning to 'copilot' triggers the workspace agent session
-          gh issue edit ${{ github.event.issue.number }} --add-assignee "copilot"
+          # Assigning '@copilot' triggers the workspace agent session
+          gh issue edit ${{ github.event.issue.number }} --add-assignee "@copilot"
           
           gh issue comment ${{ github.event.issue.number }} --body "🚀 **Migration Started.** The Copilot Coding Agent is now interpreting your tables and generating the C# code. You will receive a Pull Request shortly."
