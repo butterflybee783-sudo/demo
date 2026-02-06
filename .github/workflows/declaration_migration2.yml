@@ -1,26 +1,14 @@
-name: 🤖 Trigger Copilot Migration Agent
-on:
-  issues:
-    types: [labeled]
-
-jobs:
-  initiate_migration:
-    if: github.event.label.name == 'declaration-keys-migration-request'
-    runs-on: ubuntu-latest
-    permissions:
-      issues: write
-
-    steps:
-      # --- ADD THIS STEP BELOW ---
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      # ---------------------------
-
-      - name: 🚀 Assign to Copilot Agent
+- name: 🚀 Assign to Copilot Agent
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Assigning '@copilot' triggers the workspace agent session
-          gh issue edit ${{ github.event.issue.number }} --add-assignee "@copilot"
-          
+          # Use the REST API to add the Copilot bot as an assignee
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/assignees \
+            -f "assignees[]=copilot-swe-agent[bot]"
+
+          # Notify the issue that the agent is starting
           gh issue comment ${{ github.event.issue.number }} --body "🚀 **Migration Started.** The Copilot Coding Agent is now interpreting your tables and generating the C# code. You will receive a Pull Request shortly."
