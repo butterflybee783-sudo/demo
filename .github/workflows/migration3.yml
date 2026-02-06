@@ -1,17 +1,15 @@
-name: 🤖 Trigger Copilot Migration Agent22
+name: 🤖 Trigger Copilot Migration Agent2
 on:
   issues:
     types: [labeled]
 
 jobs:
   initiate_migration:
-    # Only run for your specific migration label
     if: github.event.label.name == 'declaration-keys-migration-request'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
       issues: write
-      pull-requests: write
+      contents: read
 
     steps:
       - name: Checkout Repository
@@ -21,7 +19,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Use the official handle to trigger the agent
-          gh issue edit ${{ github.event.issue.number }} --add-assignee "copilot"
+          # Use the official internal login for the coding agent
+          gh issue edit ${{ github.event.issue.number }} --add-assignee "copilot-swe-agent"
           
+          # Optional: Comment to confirm trigger
           gh issue comment ${{ github.event.issue.number }} --body "🚀 **Migration Started.** The Copilot Coding Agent is now interpreting your tables."
