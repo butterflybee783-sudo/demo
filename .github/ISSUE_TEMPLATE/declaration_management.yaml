@@ -1,59 +1,53 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Config Documentation</title>
-</head>
-<body>
+name: 🚀 Declaration Management Request
+description: The easiest way to Add, Update, or Delete keys without using tables or pipes.
+title: "Declaration: [Country Name]"
+labels: ["migration-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 📖 Quick Guide
+        Fill out the fields below. No special formatting or "pipes" (|) are required!
 
-    <h2>Configuration Entry Table</h2>
-    <p>Fill in the details for your DbContext settings below:</p>
+  - type: dropdown
+    id: action
+    attributes:
+      label: "What is the primary action?"
+      options:
+        - Add New Entries
+        - Update Existing Entries
+        - Delete Entries
+    validations:
+      required: true
 
-    <table border="1" id="docTable" style="width:100%; border-collapse: collapse;">
-        <thead>
-            <tr>
-                <th>Setting Name</th>
-                <th>Key/Path</th>
-                <th>Value (Connection String)</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><input type="text" style="width:95%"></td>
-                <td><input type="text" style="width:95%"></td>
-                <td><input type="text" style="width:95%"></td>
-                <td><button onclick="deleteRow(this)">Remove</button></td>
-            </tr>
-        </tbody>
-    </table>
+  - type: input
+    id: country_code
+    attributes:
+      label: "Country Code"
+      placeholder: "e.g., ES"
+    validations:
+      required: true
 
-    <br>
-    <button onclick="addRow()">+ Add New Row</button>
+  - type: textarea
+    id: entry_list
+    attributes:
+      label: "Entry Details"
+      description: "List the MessageType and MessageName here. If adding multiple, put each on a new line."
+      placeholder: |
+        MessageType: CC415A, Name: Standard declaration
+        MessageType: CC415B, Name: Simplified declaration
+    validations:
+      required: true
 
-    <script>
-        function addRow() {
-            var table = document.getElementById("docTable").getElementsByTagName('tbody')[0];
-            var row = table.insertRow(-1);
-            
-            // Create 3 input cells
-            for (var i = 0; i < 3; i++) {
-                var cell = row.insertCell(i);
-                var input = document.createElement("input");
-                input.type = "text";
-                input.style.width = "95%";
-                cell.appendChild(input);
-            }
-            
-            // Add the delete button cell
-            var actionCell = row.insertCell(3);
-            actionCell.innerHTML = '<button onclick="deleteRow(this)">Remove</button>';
-        }
+  - type: textarea
+    id: additional_metadata
+    attributes:
+      label: "Additional Details (Optional)"
+      description: "Any extra info like ProcedureGroup or ValidFrom dates."
+      placeholder: "ProcedureGroup: Standard, ValidFrom: 0001-01-01"
 
-        function deleteRow(btn) {
-            var row = btn.parentNode.parentNode;
-            row.parentNode.removeChild(row);
-        }
-    </script>
-
-</body>
-</html>
+  - type: textarea
+    id: justification
+    attributes:
+      label: "Business Justification"
+      placeholder: "Why are these changes needed? (e.g., New country onboarding)"
